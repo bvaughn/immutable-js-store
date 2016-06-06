@@ -51,12 +51,14 @@ Subscribers will be passed a reference to the current store-state when updates a
 Stepping backwards or forward will notify subscribers of the updated "current" state.
 This method returns an unsubscribe function; invoke it to stop being notified of changes to the store.
 
-##### `subscribesubscribeIn(path, subscriber): Function`
+##### `subscribeIn(path, subscriber): Function`
 Memoized subscription to a specific path in the Immutable store.
 Subscribers will be passed the value contained at the specified path within the current store-state.
 This method returns an unsubscribe function; invoke it to stop being notified of changes to the store.
 
 ### Example
+import ImmutableStore from 'immutable-js-store'
+
 ```js
 // Simple example store with a default state
 const store = new ImmutableStore({
