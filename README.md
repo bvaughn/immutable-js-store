@@ -57,9 +57,9 @@ Subscribers will be passed the value contained at the specified path within the 
 This method returns an unsubscribe function; invoke it to stop being notified of changes to the store.
 
 ### Example
+```js
 import ImmutableStore from 'immutable-js-store'
 
-```js
 // Simple example store with a default state
 const store = new ImmutableStore({
   user: {
