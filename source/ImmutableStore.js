@@ -58,28 +58,20 @@ export default class ImmutableStore {
     return this._historyIndex > 0
   }
 
+  jumpToEnd () {
+    return this._jumpTo(this._history.length - 1)
+  }
+
+  jumpToStart () {
+    return this._jumpTo(0)
+  }
+
   stepBack () {
-    return this.stepTo(this._historyIndex - 1)
+    return this._jumpTo(this._historyIndex - 1)
   }
 
   stepForward () {
-    return this.stepTo(this._historyIndex + 1)
-  }
-
-  stepTo (index) {
-    this._historyIndex = Math.min(Math.max(index, 0), this._history.length - 1)
-
-    this._notifySubscribers()
-
-    return this.getState()
-  }
-
-  stepToEnd () {
-    return this.stepTo(this._history.length - 1)
-  }
-
-  stepToStart () {
-    return this.stepTo(0)
+    return this._jumpTo(this._historyIndex + 1)
   }
 
   /**
@@ -109,6 +101,18 @@ export default class ImmutableStore {
         subscriber(value)
       }
     })
+  }
+
+  _jumpTo (index) {
+    index = Math.min(Math.max(index, 0), this._history.length - 1)
+
+    if (this._historyIndex !== index) {
+      this._historyIndex = index
+
+      this._notifySubscribers()
+
+      return this.getState()
+    }
   }
 
   _notifySubscribers () {

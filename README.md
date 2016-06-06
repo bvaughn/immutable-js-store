@@ -25,39 +25,36 @@ Is there a newer state (after) the current cursor?
 ##### hasPrevious(): boolean
 Is there an older state (before) the current cursor?
 
+##### jumpToEnd(): Immutable.Collection
+Move the cursor to the most recent (last) state.
+This will notify all current subscribers.
+This method returns the value of the state at the updated cursor if the cursor has changed.
+
+##### jumpToStart(): Immutable.Collection
+Move the cursor to the very first (initial) state.
+This will notify all current subscribers.
+This method returns the value of the state at the updated cursor if the cursor has changed.
+
 ##### stepBack(): Immutable.Collection
 Decrease the cursor by 1, to the state that came before the current one.
 This will notify all current subscribers.
-This method returns the value of the state at the updated cursor.
+This method returns the value of the state at the updated cursor if the cursor has changed.
 
 ##### stepForward(): Immutable.Collection
 Increase the cursor by 1, to the state that came after the current one.
 This will notify all current subscribers.
-This method returns the value of the state at the updated cursor.
-
-##### stepTo(index: number): Immutable.Collection
-Move the cursor to a specific position.
-This will notify all current subscribers.
-This method returns the value of the state at the updated cursor.
-
-##### stepToEnd(): Immutable.Collection
-Move the cursor to the most recent (last) state.
-This will notify all current subscribers.
-This method returns the value of the state at the updated cursor.
-
-##### stepToStart(): Immutable.Collection
-Move the cursor to the very first (initial) state.
-This will notify all current subscribers.
-This method returns the value of the state at the updated cursor.
+This method returns the value of the state at the updated cursor if the cursor has changed.
 
 ##### subscribe(subscriber): Function
 Subscribe to store changes.
 Subscribers will be passed a reference to the current store-state when updates are made.
 Stepping backwards or forward will notify subscribers of the updated "current" state.
+This method returns an unsubscribe function; invoke it to stop being notified of changes to the store.
 
 ##### subscribesubscribeIn(path, subscriber): Function
 Memoized subscription to a specific path in the Immutable store.
 Subscribers will be passed the value contained at the specified path within the current store-state.
+This method returns an unsubscribe function; invoke it to stop being notified of changes to the store.
 
 ### Example
 ```js

@@ -11,7 +11,7 @@ test('ImmutableStore should initialize with the specified default', (t) => {
 test('ImmutableStore should notify subscribers of changes to store', (t) => {
   const notifications = []
   const store = new ImmutableStore()
-  store.subscribe((state) => notifications.push(state))
+  const unsubscribe = store.subscribe((state) => notifications.push(state))
   t.equal(notifications.length, 0)
   store.set('foo', 'bar')
   t.equal(notifications.length, 1)
@@ -19,17 +19,20 @@ test('ImmutableStore should notify subscribers of changes to store', (t) => {
   store.set('foo', 'baz')
   t.equal(notifications.length, 2)
   t.equal(notifications[1].get('foo'), 'baz')
+  unsubscribe()
+  store.set('foo', 'what comes after baz?')
+  t.equal(notifications.length, 2)
   t.end()
 })
 
-test('ImmutableStore should notify :subscribeIn subscribers if their store node has chagned', (t) => {
+test('ImmutableStore should notify :subscribeIn subscribers if their store node has changed', (t) => {
   const notifications = []
   const store = new ImmutableStore({
     user: {
       name: 'Brian'
     }
   })
-  store.subscribeIn(['user', 'name'], (state) => notifications.push(state))
+  const unsubscribe = store.subscribeIn(['user', 'name'], (state) => notifications.push(state))
   t.equal(notifications.length, 0)
   store.setIn(['user', 'location'], 'San Jose')
   t.equal(notifications.length, 0)
@@ -41,6 +44,9 @@ test('ImmutableStore should notify :subscribeIn subscribers if their store node 
   store.setIn(['user', 'name'], 'Brian')
   t.equal(notifications.length, 2)
   t.equal(notifications[1], 'Brian')
+  unsubscribe()
+  store.mergeIn(['user'], { name: 'Someone other than Brian' })
+  t.equal(notifications.length, 2)
   t.end()
 })
 
@@ -80,19 +86,42 @@ test('ImmutableStore should notify :hasNext and :hasPrevious based on the curren
 })
 
 test('ImmutableStore should notify subscribers when the store changes due to stepping backward or forward', (t) => {
-  const notifications = []
   const store = new ImmutableStore({ counter: 0 })
+  store.set('counter', 1)
+  store.set('counter', 2)
+  const notifications = []
   store.subscribe((state) => notifications.push(state))
   t.equal(notifications.length, 0)
-  store.set('counter', 1)
-  t.equal(notifications.length, 1)
-  t.equal(notifications[0].get('counter'), 1)
-  store.stepBack()
+  while (store.stepBack()) {}
   t.equal(notifications.length, 2)
   t.equal(notifications[1].get('counter'), 0)
+  store.stepBack()
+  t.equal(notifications.length, 2)
+  while (store.stepForward()) {}
+  t.equal(notifications.length, 4)
+  t.equal(notifications[3].get('counter'), 2)
   store.stepForward()
-  t.equal(notifications.length, 3)
-  t.equal(notifications[2].get('counter'), 1)
+  t.equal(notifications.length, 4)
+  t.end()
+})
+
+test('ImmutableStore should notify jump to start or end', (t) => {
+  const store = new ImmutableStore({ counter: 0 })
+  store.set('counter', 1)
+  store.set('counter', 2)
+  const notifications = []
+  store.subscribe((state) => notifications.push(state))
+  t.equal(notifications.length, 0)
+  store.jumpToStart()
+  t.equal(notifications.length, 1)
+  t.equal(notifications[0].get('counter'), 0)
+  store.jumpToStart()
+  t.equal(notifications.length, 1)
+  store.jumpToEnd()
+  t.equal(notifications.length, 2)
+  t.equal(notifications[1].get('counter'), 2)
+  store.jumpToEnd()
+  t.equal(notifications.length, 2)
   t.end()
 })
 
