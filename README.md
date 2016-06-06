@@ -11,7 +11,7 @@ npm install immutable-js-store
 
 ### Api
 
-##### constructor(initialState = {})
+##### constructor(initialState: ?Object)
 Initialize the store (with an optional default state).
 
 ##### getState(): Immutable.Collection
@@ -20,7 +20,7 @@ By default the cursor will point to the most recent state.
 Use the "step" methods to modify the cursor and undo or replay events.
 
 ##### hasNext(): boolean
-Is there a new state (after) the current cursor?
+Is there a newer state (after) the current cursor?
 
 ##### hasPrevious(): boolean
 Is there an older state (before) the current cursor?
@@ -61,7 +61,7 @@ Subscribers will be passed the value contained at the specified path within the 
 
 ### Example
 ```js
-// Simple example store
+// Simple example store with a default state
 const store = new ImmutableStore({
   user: {
     id: 1,
