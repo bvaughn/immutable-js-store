@@ -68,12 +68,12 @@ const store = new ImmutableStore({
 })
 
 // Subscribe to any top-level store changes
-store.subscribe(
+const unsubscribeFromStore = store.subscribe(
   (store) => console.log(JSON.stringify(store.toJS()))
 )
 
 // Subscribe only to changes below store.user.name
-store.subscribeIn(['user', 'name'],
+const unsubscribeFromName = store.subscribeIn(['user', 'name'],
   (name) => console.log('name:', name)
 )
 

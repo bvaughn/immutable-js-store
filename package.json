@@ -1,6 +1,6 @@
 {
   "name": "immutable-js-store",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tiny observable wrapper around Immutable JS with rewind/replay support",
   "author": "Brian Vaughn (brian.david.vaughn@gmail.com)",
   "license": "MIT",
