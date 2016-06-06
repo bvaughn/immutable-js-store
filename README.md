@@ -11,47 +11,47 @@ npm install immutable-js-store
 
 ### Api
 
-##### constructor(initialState: ?Object)
+##### `constructor(initialState: ?Object)`
 Initialize the store (with an optional default state).
 
-##### getState(): Immutable.Collection
+##### `getState(): Immutable.Collection`
 Returns the reference to the `Immutable` state at the current cursor.
 By default the cursor will point to the most recent state.
 Use the "step" methods to modify the cursor and undo or replay events.
 
-##### hasNext(): boolean
+##### `hasNext(): boolean`
 Is there a newer state (after) the current cursor?
 
-##### hasPrevious(): boolean
+##### `hasPrevious(): boolean`
 Is there an older state (before) the current cursor?
 
-##### jumpToEnd(): Immutable.Collection
+##### `jumpToEnd(): ?Immutable.Collection`
 Move the cursor to the most recent (last) state.
 This will notify all current subscribers.
 This method returns the value of the state at the updated cursor if the cursor has changed.
 
-##### jumpToStart(): Immutable.Collection
+##### `jumpToStart(): ?Immutable.Collection`
 Move the cursor to the very first (initial) state.
 This will notify all current subscribers.
 This method returns the value of the state at the updated cursor if the cursor has changed.
 
-##### stepBack(): Immutable.Collection
+##### `stepBack(): ?Immutable.Collection`
 Decrease the cursor by 1, to the state that came before the current one.
 This will notify all current subscribers.
 This method returns the value of the state at the updated cursor if the cursor has changed.
 
-##### stepForward(): Immutable.Collection
+##### `stepForward(): ?Immutable.Collection`
 Increase the cursor by 1, to the state that came after the current one.
 This will notify all current subscribers.
 This method returns the value of the state at the updated cursor if the cursor has changed.
 
-##### subscribe(subscriber): Function
+##### `subscribe(subscriber): Function`
 Subscribe to store changes.
 Subscribers will be passed a reference to the current store-state when updates are made.
 Stepping backwards or forward will notify subscribers of the updated "current" state.
 This method returns an unsubscribe function; invoke it to stop being notified of changes to the store.
 
-##### subscribesubscribeIn(path, subscriber): Function
+##### `subscribesubscribeIn(path, subscriber): Function`
 Memoized subscription to a specific path in the Immutable store.
 Subscribers will be passed the value contained at the specified path within the current store-state.
 This method returns an unsubscribe function; invoke it to stop being notified of changes to the store.
