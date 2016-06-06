@@ -1,0 +1,65 @@
+{
+  "name": "immutable-js-store",
+  "version": "0.0.1",
+  "description": "Tiny observable wrapper around Immutable JS with rewind/replay support",
+  "author": "Brian Vaughn (brian.david.vaughn@gmail.com)",
+  "license": "MIT",
+  "main": "dist/immutable-js-store.js",
+  "bugs": {
+    "url": "https://github.com/bvaughn/immutable-js-store/issues"
+  },
+  "homepage": "https://github.com/bvaughn/immutable-js-store#readme",
+  "scripts": {
+    "build": "npm run clean && NODE_ENV=production webpack --config webpack.config.dist.js --bail",
+    "clean": "rimraf dist",
+    "deploy": "gh-pages -d build",
+    "lint": "standard",
+    "prebuild": "npm run lint",
+    "postpublish": "npm run deploy",
+    "prepublish": "npm run build",
+    "start": "watch 'clear && npm run lint -s && npm run test -s' source",
+    "test": "babel-node node_modules/.bin/tape 'source/**/*.test.js' | tspec"
+  },
+  "keywords": [
+    "immutable",
+    "immutable-js",
+    "state",
+    "store",
+    "flux",
+    "redux"
+  ],
+  "standard": {
+    "parser": "babel-eslint",
+    "ignore": [
+      "build",
+      "dist",
+      "node_modules"
+    ],
+    "global": [
+      "self"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "~6.3.17",
+    "babel-core": "~6.3.26",
+    "babel-eslint": "^4.1.6",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-syntax-flow": "^6.3.13",
+    "babel-plugin-transform-flow-strip-types": "^6.3.15",
+    "babel-plugin-typecheck": "^3.5.1",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "babylon": "~6.3.26",
+    "immutable": "^3.7.6",
+    "rimraf": "^2.5.0",
+    "standard": "^5.4.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.4.0",
+    "watch": "^0.17.1",
+    "webpack": "^1.12.9",
+    "worker-loader": "^0.7.0"
+  },
+  "dependencies": {
+    "immutable": "^3.7.6"
+  }
+}
