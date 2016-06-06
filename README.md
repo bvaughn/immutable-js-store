@@ -79,11 +79,27 @@ const unsubscribeFromName = store.subscribeIn(['user', 'name'],
   (name) => console.log('name:', name)
 )
 
-store.set('counter', store.get('counter') + 1) // "{ user: { id: 1, name: 'Brian' }, counter: 1}"
-store.set('counter', store.get('counter') + 1) // "{ user: { id: 1, name: 'Brian' }, counter: 2}"
-store.setIn(['user', 'name'], 'Brian Vaughn') // "{ user: { id: 1, name: 'Brian Vaughn' }, counter: 2}", "name: Brian Vaughn"
-store.stepBack() // "{ user: { id: 1, name: 'Brian' }, counter: 2}", "name: Brian"
-store.stepBack() // "{ user: { id: 1, name: 'Brian' }, counter: 1}"
-store.stepForward() // "{ user: { id: 1, name: 'Brian' }, counter: 2}"
-store.stepForward() // "{ user: { id: 1, name: 'Brian Vaughn' }, counter: 2}", "name: Brian Vaughn"
+store.set('counter', store.get('counter') + 1)
+// { user: { id: 1, name: 'Brian' }, counter: 1}
+
+store.set('counter', store.get('counter') + 1)
+// { user: { id: 1, name: 'Brian' }, counter: 2}
+
+store.setIn(['user', 'name'], 'Brian Vaughn')
+// { user: { id: 1, name: 'Brian Vaughn' }, counter: 2}
+// name: Brian Vaughn
+
+store.stepBack()
+// { user: { id: 1, name: 'Brian' }, counter: 2}
+// name: Brian
+
+store.stepBack()
+// { user: { id: 1, name: 'Brian' }, counter: 1}
+
+store.stepForward()
+// { user: { id: 1, name: 'Brian' }, counter: 2}
+
+store.stepForward()
+// { user: { id: 1, name: 'Brian Vaughn' }, counter: 2}
+// name: Brian Vaughn
 ```
