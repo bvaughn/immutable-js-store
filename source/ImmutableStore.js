@@ -28,22 +28,29 @@ export default class ImmutableStore {
         const state = this.getState()
         const newState = state[method](...args)
 
-        this._history.push(newState)
-
-        // Only advance state if we're currently at the head.
-        // If user is replaying state, just add new actions to the end.
-        if (this._historyIndex === this._history.length - 2) {
-          this._historyIndex++
+        // If we have stepped back to a previous state and an update is received-
+        // We should disregard the "newer" state.
+        if (this._historyIndex < this._history.length - 1) {
+          this._history.splice(this._historyIndex + 1)
         }
 
-        // @TODO What happens if the store is updated when in a detatched head state?
-        // Should I disallow updates (by Erroring)?
+        this._history.push(newState)
+        this._historyIndex++
 
-        this._notifySubscribers()
+        if (state !== newState) {
+          this._notifySubscribers()
+        }
 
         return newState
       }
     })
+  }
+
+  clearHistory () {
+    const state = this.getState()
+
+    this._history = [state]
+    this._historyIndex = 0
   }
 
   getState () {

@@ -14,6 +14,9 @@ npm install immutable-js-store
 ##### `constructor(initialState: ?Object)`
 Initialize the store (with an optional default state).
 
+##### `clearHistory(): Immutable.Collection`
+Removes all history before the current cursor.
+
 ##### `getState(): Immutable.Collection`
 Returns the reference to the `Immutable` state at the current cursor.
 By default the cursor will point to the most recent state.

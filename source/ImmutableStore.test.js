@@ -25,6 +25,20 @@ test('ImmutableStore should notify subscribers of changes to store', (t) => {
   t.end()
 })
 
+test('ImmutableStore should not notify subscribers if store has not been changed', (t) => {
+  const notifications = []
+  const store = new ImmutableStore()
+  store.subscribe((state) => notifications.push(state))
+  t.equal(notifications.length, 0)
+  store.set('foo', 'bar')
+  t.equal(notifications.length, 1)
+  t.equal(notifications[0].get('foo'), 'bar')
+  store.set('foo', 'bar')
+  t.equal(notifications.length, 1)
+  t.equal(notifications[0].get('foo'), 'bar')
+  t.end()
+})
+
 test('ImmutableStore should notify :subscribeIn subscribers if their store node has changed', (t) => {
   const notifications = []
   const store = new ImmutableStore({
@@ -122,6 +136,38 @@ test('ImmutableStore should notify jump to start or end', (t) => {
   t.equal(notifications[1].get('counter'), 2)
   store.jumpToEnd()
   t.equal(notifications.length, 2)
+  t.end()
+})
+
+test('ImmutableStore should clear history after the current index if the store is updated', (t) => {
+  const store = new ImmutableStore({ counter: 0 })
+  store.set('counter', 1)
+  store.set('counter', 2)
+  store.set('counter', 3)
+  store.stepBack()
+  store.stepBack()
+  t.equal(store.get('counter'), 1)
+  store.set('counter', 4)
+  t.equal(store.hasPrevious(), true)
+  t.equal(store.hasNext(), false)
+  t.equal(store.get('counter'), 4)
+  store.stepBack()
+  t.equal(store.get('counter'), 1)
+  t.equal(store.hasPrevious(), true)
+  t.equal(store.hasNext(), true)
+  t.end()
+})
+
+test('ImmutableStore should clear all history before the index if it is flushed', (t) => {
+  const store = new ImmutableStore({ counter: 0 })
+  store.set('counter', 1)
+  store.set('counter', 2)
+  t.equal(store.hasPrevious(), true)
+  t.equal(store.hasNext(), false)
+  store.clearHistory()
+  t.equal(store.hasPrevious(), false)
+  t.equal(store.hasNext(), false)
+  t.equal(store.get('counter'), 2)
   t.end()
 })
 
